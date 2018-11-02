@@ -11,9 +11,11 @@
 #include <libsec.h>
 #include "dat.h"
 #include "fns.h"
-	/* for generating syms in mkfile only: */
-	#include <bio.h>
-	#include "edit.h"
+#include "config.h"
+
+/* for generating syms in mkfile only: */
+#include <bio.h>
+#include "edit.h"
 
 void	mousethread(void*);
 void	keyboardthread(void*);
@@ -21,27 +23,20 @@ void	waitthread(void*);
 void	xfidallocthread(void*);
 void	newwindowthread(void*);
 void	plumbproc(void*);
-int	timefmt(Fmt*);
+int		timefmt(Fmt*);
 
 Reffont	**fontcache;
 int		nfontcache;
-char		wdir[512] = ".";
+char	wdir[512] = ".";
 Reffont	*reffonts[2];
 int		snarffd = -1;
 int		mainpid;
-int		swapscrollbuttons = FALSE;
-char		*mtpt;
+char	*mtpt;
 
 enum{
 	NSnarf = 1000	/* less than 1024, I/O buffer size */
 };
 Rune	snarfrune[NSnarf+1];
-
-char		*fontnames[2] =
-{
-	"/lib/font/bit/lucsans/euro.8.font",
-	"/lib/font/bit/lucm/unicode.9.font"
-};
 
 Command *command;
 
@@ -65,7 +60,6 @@ threadmain(int argc, char *argv[])
 	Column *c;
 	int ncol;
 	Display *d;
-
 	rfork(RFENVG|RFNAMEG);
 
 	ncol = -1;
@@ -78,11 +72,26 @@ threadmain(int argc, char *argv[])
 		}
 		break;
 	case 'a':
-		globalautoindent = TRUE;
+		if(globalautoindent)
+			globalautoindent = FALSE;
+		else
+			globalautoindent = TRUE;
 		break;
-	case 'b':
+
+/*  bartmode/flag is now an option to be turned on config.h, just
+ *  because it is way too useful to leave it as an meaningless
+ *  flag, especially since considering how almost everyone seems
+ *  to even miss its existence.
+ *
+ *  to get to the point, it denies window focus following mouse.
+ *  how fickle those mice can truly be when decieveth by a soothing
+ *  treat, a teat or two.
+ */
+
+/*	case 'b':
 		bartflag = TRUE;
-		break;
+		break; */
+
 	case 'c':
 		p = ARGF();
 		if(p == nil)
@@ -383,7 +392,7 @@ int erroutfd;
 void
 acmeerrorproc(void *v)
 {
-	char *buf, *s;
+	char *buf;
 	int n;
 
 	USED(v);
@@ -391,11 +400,8 @@ acmeerrorproc(void *v)
 	buf = emalloc(8192+1);
 	while((n=read(errorfd, buf, 8192)) >= 0){
 		buf[n] = '\0';
-		s = estrdup(buf);
-		sendp(cerr, s);
-		free(s);
+		sendp(cerr, estrdup(buf));
 	}
-	free(buf);
 }
 
 void
@@ -973,21 +979,21 @@ iconinit(void)
 	Image *tmp;
 
 	if(tagcols[BACK] == nil) {
-		/* Blue */
-		tagcols[BACK] = allocimagemix(display, DPalebluegreen, DWhite);
-		tagcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DPalegreygreen);
-		tagcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DPurpleblue);
-		tagcols[TEXT] = display->black;
-		tagcols[HTEXT] = display->black;
-	
-		/* Yellow */
-		textcols[BACK] = allocimagemix(display, DPaleyellow, DWhite);
-		textcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DDarkyellow);
-		textcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DYellowgreen);
-		textcols[TEXT] = display->black;
-		textcols[HTEXT] = display->black;
+
+		tagcols[BACK]	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TAGBG);
+		tagcols[HIGH]	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TAGHLBG);
+		tagcols[BORD]	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_COLBUTTON);
+		tagcols[TEXT]	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TAGFG);
+		tagcols[HTEXT]	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TAGHLFG);
+
+		textcols[BACK] 	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TXTBG);
+		textcols[HIGH] 	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TXTHLBG);
+		textcols[BORD] 	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_SCROLLBG);
+		textcols[TEXT] 	= allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TXTFG);
+		textcols[HTEXT] = allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TXTHLFG);
+
 	}
-	
+
 	r = Rect(0, 0, Scrollwid+ButtonBorder, font->height+1);
 	if(button && eqrect(r, button->r))
 		return;
@@ -1009,15 +1015,15 @@ iconinit(void)
 	r.max.x -= ButtonBorder;
 	border(modbutton, r, ButtonBorder, tagcols[BORD], ZP);
 	r = insetrect(r, ButtonBorder);
-	tmp = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DMedblue);
+	tmp = allocimage(display, Rect(0,0,1,1), RGBA32, 1, C_TMPBUTTON);
 	draw(modbutton, r, tmp, nil, ZP);
 	freeimage(tmp);
 
 	r = button->r;
-	colbutton = allocimage(display, r, screen->chan, 0, DPurpleblue);
+	colbutton = allocimage(display, r, RGBA32, 1, C_WINBUTTON);
 
-	but2col = allocimage(display, r, screen->chan, 1, 0xAA0000FF);
-	but3col = allocimage(display, r, screen->chan, 1, 0x006600FF);
+	but2col = allocimage(display, r, screen->chan, 1, C_BUTTON2HL);
+	but3col = allocimage(display, r, screen->chan, 1, C_BUTTON3HL);
 }
 
 /*
@@ -1101,4 +1107,3 @@ timefmt(Fmt *f)
 	return fmtprint(f, "%04d/%02d/%02d %02d:%02d:%02d",
 		tm->year+1900, tm->mon+1, tm->mday, tm->hour, tm->min, tm->sec);
 }
-
