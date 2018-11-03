@@ -18,7 +18,7 @@ char *fontnames[2] = {
 };
 
 /*
- *  globalautoindent tries to guess where to
+ *  globalautoindent tries to gue  ss where to
  *  indent by the context of the previous line.
  *
  *  comes highly suggested.
@@ -61,21 +61,20 @@ int bartflag			= TRUE;
  *  the last two defines are for defining the color of the specific
  *  buttons highlight background.
  */
-
-#define C_TAGBG			0xFFFFFFFF
-#define C_TAGFG			0x000000FF
-#define C_TAGHLBG		0x999999FF
+#define C_TAGBG			0x000000FF
+#define C_TAGFG			0xFFFFFFFF
+#define C_TAGHLBG		0xFF725CFF
 #define C_TAGHLFG		0x000000FF
 
-#define C_TXTBG			0xFFFFFFFF
-#define C_TXTFG			0x000000FF
-#define C_TXTHLBG		0x999999FF
+#define C_TXTBG			0x000000FF
+#define C_TXTFG			0xFFFFFFFF
+#define C_TXTHLBG		0xFFDE37FF
 #define C_TXTHLFG		0x000000FF
 
-#define C_WINBUTTON		0x4d4d4dFF
-#define C_COLBUTTON		0x55aaaaFF
-#define C_TMPBUTTON		0x55aaaaFF
-#define C_SCROLLBG		0x999999FF
+#define C_WINBUTTON		0xA463F2FF
+#define C_COLBUTTON		0x5E2CA5FF
+#define C_TMPBUTTON		0x5E2CA5FF
+#define C_SCROLLBG		0x222222FF
 
-#define C_BUTTON2HL		0x55aaaaFF
-#define C_BUTTON3HL		0x55aaaaFF
+#define C_BUTTON2HL		0xFF4136FF
+#define C_BUTTON3HL		0xFF4136FF
