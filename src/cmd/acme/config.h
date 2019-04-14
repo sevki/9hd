@@ -13,8 +13,8 @@
  */
 
 char *fontnames[2] = {
-	"/lib/font/bit/profont/profont-12.font",
-	"/lib/font/bit/mntcarlo/mntcarlo.font"
+	"/usr/lib/plan9/font/terminus/ter-u12n.font",
+	"/usr/lib/plan9/font/terminus/ter-u12n.font"
 };
 
 /*
@@ -24,7 +24,7 @@ char *fontnames[2] = {
  *  comes highly suggested.
  */
 
-int globalautoindent	= TRUE;
+int globalautoindent	= FALSE;
 
 /*
  *  swapping scroll buttons makes B1 scroll down
@@ -41,7 +41,7 @@ int	swapscrollbuttons	= FALSE;
  *  comes highly suggested.
  */
 
-int bartflag			= TRUE;
+int bartflag			= FALSE;
 
 /*
  *  colors-constants. now let me take a minute to explain
@@ -63,7 +63,7 @@ int bartflag			= TRUE;
  */
 #define C_TAGBG			0x000000FF
 #define C_TAGFG			0xFFFFFFFF
-#define C_TAGHLBG		0xFF725CFF
+#define C_TAGHLBG		0xFF725CFF  
 #define C_TAGHLFG		0x000000FF
 
 #define C_TXTBG			0x000000FF
@@ -71,9 +71,9 @@ int bartflag			= TRUE;
 #define C_TXTHLBG		0xFFDE37FF
 #define C_TXTHLFG		0x000000FF
 
-#define C_WINBUTTON		0xA463F2FF
-#define C_COLBUTTON		0x5E2CA5FF
-#define C_TMPBUTTON		0x5E2CA5FF
+#define C_WINBUTTON		0x191919FF
+#define C_COLBUTTON		0xe7040fFF
+#define C_TMPBUTTON		0xe7040fFF
 #define C_SCROLLBG		0x222222FF
 
 #define C_BUTTON2HL		0xFF4136FF

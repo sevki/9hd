@@ -474,7 +474,9 @@ keyboardthread(void *v)
 	timer = nil;
 	typetext = nil;
 	threadsetname("keyboardthread");
+
 	for(;;){
+
 		switch(alt(alts)){
 		case KTimer:
 			timerstop(timer);
@@ -491,9 +493,11 @@ keyboardthread(void *v)
 		case KKey:
 		casekeyboard:
 			typetext = rowtype(&row, r, mouse->xy);
+
 			t = typetext;
-			if(t!=nil && t->col!=nil && !(r==Kdown || r==Kleft || r==Kright))	/* scrolling doesn't change activecol */
-				activecol = t->col;
+			if(t!=nil && t->col!=nil && !(r==Kdown || r==Kleft || r==Kright)) {	/* scrolling doesn't change activecol */
+				activecol = t->col;	
+			}
 			if(t!=nil && t->w!=nil)
 				t->w->body.file->curtext = &t->w->body;
 			if(timer != nil)

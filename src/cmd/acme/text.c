@@ -665,6 +665,14 @@ textcomplete(Text *t)
 }
 
 void
+selecttype(Text *t) {
+
+	print("q0=%d q1=%d org=%d eq0=%d\n", t->q0, t->q1, t->org, t->eq0);
+//	textsetselect(t, start, end);
+//	flushimage(display, 1);	
+}
+
+void
 texttype(Text *t, Rune r)
 {
 	uint q0, q1;
@@ -678,16 +686,40 @@ texttype(Text *t, Rune r)
 	if(t->what == Tag)
 		t->w->tagsafe = FALSE;
 
+	print("%x\n", r);
+	t->eq0 = t->q0;
+
 	nr = 1;
 	rp = &r;
 	switch(r){
+	case Kesc:
+		if (!t->mod) {
+			t->mod = TRUE;
+		} else {
+			t->eq0 = ~0;
+			t->dir = 1;
+			t->mod = FALSE;
+		}
+		typecommit(t);
+		return;
 	case Kleft:
 		typecommit(t);
-		if(t->q0 > 0)
+		if (t->mod) {
+			t->dir = 0;
+			selecttype(t);
+			return;
+		}
+		if(t->q0 > 0) {
 			textshow(t, t->q0-1, t->q0-1, TRUE);
+		}
 		return;
 	case Kright:
 		typecommit(t);
+		if (t->mod) {
+			t->dir = 1;
+			selecttype(t);
+			return;
+		}
 		if(t->q1 < t->file->b.nc)
 			textshow(t, t->q1+1, t->q1+1, TRUE);
 		return;

@@ -188,6 +188,9 @@ struct Text
 	Row		*row;
 	Column	*col;
 
+	char	mod;
+	char	dir;
+
 	uint	iq1;	/* last input position */
 	uint	eq0;	/* start of typing for ESC */
 	uint	cq0;	/* cache position */

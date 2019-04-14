@@ -462,10 +462,9 @@ makenewwindow(Text *t)
 			error("can't make column");
 		c = row.col[row.ncol-1];
 	}
-	activecol = c;
-	if(t==nil || t->w==nil || c->nw==0)
-		return coladd(c, nil, nil, -1);
-
+ 	if(t==nil || t->w==nil || c->nw==0)
+		return coladd(c, nil, nil, -1); 
+ 
 	/* find biggest window and biggest blank spot */
 	emptyw = c->w[0];
 	bigw = emptyw;
