@@ -13,6 +13,7 @@
 #include "dat.h"
 #include "fns.h"
 
+
 Image	*tagcols[NCOL];
 Image	*textcols[NCOL];
 static Rune Ldot[] = { '.', 0 };
@@ -24,6 +25,7 @@ enum{
 void
 textinit(Text *t, File *f, Rectangle r, Reffont *rf, Image *cols[NCOL])
 {
+	t->next = typemodeselect;
 	t->file = f;
 	t->all = r;
 	t->scrollr = r;
@@ -43,7 +45,7 @@ textredraw(Text *t, Rectangle r, Font *f, Image *b, int odx)
 {
 	int maxt;
 	Rectangle rr;
-
+	
 	frinit(&t->fr, r, f, b, t->fr.cols);
 	rr = t->fr.r;
 	rr.min.x -= Scrollwid+Scrollgap;	/* back fill to scroll bar */
@@ -665,15 +667,13 @@ textcomplete(Text *t)
 }
 
 void
-selecttype(Text *t) {
-
-	print("q0=%d q1=%d org=%d eq0=%d\n", t->q0, t->q1, t->org, t->eq0);
-//	textsetselect(t, start, end);
-//	flushimage(display, 1);	
+texttype(Text *t, Rune r)
+{
+	t->next(t,r);
 }
 
 void
-texttype(Text *t, Rune r)
+typemodeselect(Text *t, Rune r)
 {
 	uint q0, q1;
 	int nnb, nb, n, i;
@@ -686,40 +686,25 @@ texttype(Text *t, Rune r)
 	if(t->what == Tag)
 		t->w->tagsafe = FALSE;
 
-	print("%x\n", r);
+	print("%x '%c'\n", r, r);
 	t->eq0 = t->q0;
 
 	nr = 1;
 	rp = &r;
 	switch(r){
 	case Kesc:
-		if (!t->mod) {
-			t->mod = TRUE;
-		} else {
-			t->eq0 = ~0;
-			t->dir = 1;
-			t->mod = FALSE;
-		}
+	case Rstart:
 		typecommit(t);
+		t->next = &riffmode;
 		return;
 	case Kleft:
 		typecommit(t);
-		if (t->mod) {
-			t->dir = 0;
-			selecttype(t);
-			return;
-		}
 		if(t->q0 > 0) {
 			textshow(t, t->q0-1, t->q0-1, TRUE);
 		}
 		return;
 	case Kright:
 		typecommit(t);
-		if (t->mod) {
-			t->dir = 1;
-			selecttype(t);
-			return;
-		}
 		if(t->q1 < t->file->b.nc)
 			textshow(t, t->q1+1, t->q1+1, TRUE);
 		return;

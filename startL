@@ -1,0 +1,3 @@
+#!/usr/bin/env rc
+
+L -server '\.c|h$:clangd' win comp

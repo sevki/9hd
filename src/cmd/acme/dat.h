@@ -171,6 +171,8 @@ enum	/* Text.what */
 	Body
 };
 
+typedef void (*rifffunc)(Text*, Rune);
+
 struct Text
 {
 	File		*file;
@@ -190,6 +192,8 @@ struct Text
 
 	char	mod;
 	char	dir;
+	
+	rifffunc next;
 
 	uint	iq1;	/* last input position */
 	uint	eq0;	/* start of typing for ESC */
@@ -203,9 +207,9 @@ struct Text
 
 uint		textbacknl(Text*, uint, uint);
 uint		textbsinsert(Text*, uint, Rune*, uint, int, int*);
-int		textbswidth(Text*, Rune);
-int		textclickhtmlmatch(Text*, uint*, uint*);
-int		textclickmatch(Text*, int, int, int, uint*);
+int			textbswidth(Text*, Rune);
+int			textclickhtmlmatch(Text*, uint*, uint*);
+int			textclickmatch(Text*, int, int, int, uint*);
 void		textclose(Text*);
 void		textcolumnate(Text*, Dirlist**, int);
 void		textcommit(Text*, int);
@@ -216,21 +220,27 @@ void		textfill(Text*);
 void		textframescroll(Text*, int);
 void		textinit(Text*, File*, Rectangle, Reffont*, Image**);
 void		textinsert(Text*, uint, Rune*, uint, int);
-int		textload(Text*, uint, char*, int);
+int			textload(Text*, uint, char*, int);
 Rune		textreadc(Text*, uint);
 void		textredraw(Text*, Rectangle, Font*, Image*, int);
 void		textreset(Text*);
-int		textresize(Text*, Rectangle, int);
+int			textresize(Text*, Rectangle, int);
 void		textscrdraw(Text*);
 void		textscroll(Text*, int);
 void		textselect(Text*);
-int		textselect2(Text*, uint*, uint*, Text**);
-int		textselect23(Text*, uint*, uint*, Image*, int);
-int		textselect3(Text*, uint*, uint*);
+int			textselect2(Text*, uint*, uint*, Text**);
+int			textselect23(Text*, uint*, uint*, Image*, int);
+int			textselect3(Text*, uint*, uint*);
 void		textsetorigin(Text*, uint, int);
 void		textsetselect(Text*, uint, uint);
 void		textshow(Text*, uint, uint, int);
 void		texttype(Text*, Rune);
+void		typemodeselect(Text*, Rune);
+
+// Riff modes
+void	riffmode(Text *, Rune r);
+void	riffselect(Text *, Rune r);
+
 
 struct Window
 {

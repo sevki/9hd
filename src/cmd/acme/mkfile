@@ -18,6 +18,7 @@ OFILES=\
 	logf.$O\
 	look.$O\
 	regx.$O\
+	riff.$O\
 	rows.$O\
 	scrl.$O\
 	text.$O\
