@@ -206,6 +206,7 @@ struct Text
 };
 
 uint		textbacknl(Text*, uint, uint);
+uint		textnl(Text*, uint);
 uint		textbsinsert(Text*, uint, Rune*, uint, int, int*);
 int			textbswidth(Text*, Rune);
 int			textclickhtmlmatch(Text*, uint*, uint*);
@@ -235,12 +236,28 @@ void		textsetorigin(Text*, uint, int);
 void		textsetselect(Text*, uint, uint);
 void		textshow(Text*, uint, uint, int);
 void		texttype(Text*, Rune);
-void		typemodeselect(Text*, Rune);
 
 // Riff modes
+
+enum {
+	Rstart	= KF|0x0D,
+	Rselect	= 0x73, // s
+	Rline	= 0x6c, // l
+	Rword	= 0x77, // w
+	Rexec	= 0x65, // e
+	Rsnarf	= 0x63, // c
+	Rpaste	= 0x76, // v
+	Rcut	= 0x78, // x
+	Rtag	= 0x09, // \t
+};
+void	texttypemode(Text*, Rune);
+
 void	riffmode(Text *, Rune r);
 void	riffselect(Text *, Rune r);
-
+void	riffselectword(Text *);
+void	riffselectline(Text *);
+void	riffexecute(Text *);
+void	rifftag(Text *);
 
 struct Window
 {

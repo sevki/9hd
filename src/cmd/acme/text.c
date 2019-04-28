@@ -25,7 +25,7 @@ enum{
 void
 textinit(Text *t, File *f, Rectangle r, Reffont *rf, Image *cols[NCOL])
 {
-	t->next = typemodeselect;
+	t->next = texttypemode;
 	t->file = f;
 	t->all = r;
 	t->scrollr = r;
@@ -673,7 +673,7 @@ texttype(Text *t, Rune r)
 }
 
 void
-typemodeselect(Text *t, Rune r)
+texttypemode(Text *t, Rune r)
 {
 	uint q0, q1;
 	int nnb, nb, n, i;
@@ -786,14 +786,6 @@ typemodeselect(Text *t, Rune r)
  */
 
 	case 0x01:
-	case Khome:
-		typecommit(t);
-		/* go to where ^U would erase, if not already at BOL */
-		nnb = 0;
-		if(t->q0>0 && textreadc(t, t->q0-1)!='\n')
-			nnb = textbswidth(t, 0x15);
-		textshow(t, t->q0-nnb, t->q0-nnb, TRUE);
-		return;
 	case 0x05:
 	case Kend:
 		typecommit(t);
@@ -1707,6 +1699,49 @@ textbacknl(Text *t, uint p, uint n)
 				break;
 	}
 	return p;
+}
+
+uint
+textnl(Text *t, uint p)
+{
+	int i = p;
+	Rune r;
+	do{
+		if(i-p > 128)
+			return i;
+ 		r = textreadc(t, i++);
+	}while(r!='\n' || r != -1);
+	return i;
+}
+
+uint**
+split(Text *t)
+{
+	uint *spaces = malloc();
+	int i = 0;
+	Rune r;
+	do{
+		r = textreadc(t, i++);
+		if(r == ' ')
+			return i;
+	}while(r!='\n' || r != -1);
+}
+
+
+Range
+nextword(Text *t, uint n)
+{
+	Range range;
+		
+	memset(&range, 0, sizeof(Range));
+	
+	uint q0 = t->q0;
+	uint q1 = t->q1;
+
+	
+
+	
+	return range;
 }
 
 void
