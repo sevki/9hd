@@ -1,0 +1,5 @@
+#!/usr/bin/env rc
+PLAN9=/home/sevki/src/plan9port
+PATH=$PATH:$PLAN9/bin
+
+mk -k

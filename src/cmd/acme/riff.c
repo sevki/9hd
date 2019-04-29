@@ -48,8 +48,9 @@ riffselect(Text *t, Rune r)
 		riffselectline(t);
 		t->next = &riffmode;
 		return;
-	case Rtag:
-		rifftag(t);
+	case Rexec:
+		riffexecute(t);
+		t->next = &texttypemode;
 	default:
 		t->next = &texttypemode;
 	}
@@ -84,10 +85,4 @@ riffexecute(Text *t)
 
 	execute(t, q0, q1, FALSE, NULL);
 	t->next = &texttypemode;
-}
-
-void
-rifftag(Text *t)
-{
-	
 }

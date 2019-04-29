@@ -1710,24 +1710,12 @@ textnl(Text *t, uint p)
 		if(i-p > 128)
 			return i;
  		r = textreadc(t, i++);
-	}while(r!='\n' || r != -1);
+ 		printf("%c",r);
+	}while(r!='\n' && r != -1);
 	return i;
 }
 
-uint**
-split(Text *t)
-{
-	uint *spaces = malloc();
-	int i = 0;
-	Rune r;
-	do{
-		r = textreadc(t, i++);
-		if(r == ' ')
-			return i;
-	}while(r!='\n' || r != -1);
-}
-
-
+/*
 Range
 nextword(Text *t, uint n)
 {
@@ -1739,10 +1727,9 @@ nextword(Text *t, uint n)
 	uint q1 = t->q1;
 
 	
-
-	
 	return range;
 }
+*/
 
 void
 textsetorigin(Text *t, uint org, int exact)
