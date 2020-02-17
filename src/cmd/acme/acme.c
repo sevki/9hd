@@ -14,6 +14,7 @@
 	/* for generating syms in mkfile only: */
 	#include <bio.h>
 	#include "edit.h"
+#include "config.h"
 
 void	mousethread(void*);
 void	keyboardthread(void*);
@@ -39,7 +40,7 @@ Rune	snarfrune[NSnarf+1];
 
 char		*fontnames[2] =
 {
-	"/lib/font/bit/lucsans/euro.8.font",
+	"/lib/font/bit/lucsans/unicode.7.font",
 	"/lib/font/bit/lucm/unicode.9.font"
 };
 
@@ -1040,20 +1041,21 @@ iconinit(void)
 	Rectangle r;
 	Image *tmp;
 
-	if(tagcols[BACK] == nil) {
-		/* Blue */
-		tagcols[BACK] = allocimagemix(display, DPalebluegreen, DWhite);
-		tagcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DPalegreygreen);
-		tagcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DPurpleblue);
-		tagcols[TEXT] = display->black;
-		tagcols[HTEXT] = display->black;
 
-		/* Yellow */
-		textcols[BACK] = allocimagemix(display, DPaleyellow, DWhite);
-		textcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DDarkyellow);
-		textcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DYellowgreen);
-		textcols[TEXT] = display->black;
-		textcols[HTEXT] = display->black;
+	if (tagcols[BACK] == nil) {
+
+		tagcols[BACK]	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TAGBG);
+		tagcols[HIGH]	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TAGHLBG);
+		tagcols[BORD]	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_COLBUTTON);
+		tagcols[TEXT]	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TAGFG);
+		tagcols[HTEXT]	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TAGHLFG);
+
+		textcols[BACK] 	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TXTBG);
+		textcols[HIGH] 	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TXTHLBG);
+		textcols[BORD] 	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_SCROLLBG);
+		textcols[TEXT] 	 = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TXTFG);
+		textcols[HTEXT] = allocimage(display, Rect(0, 0, 1, 1), RGBA32, 1, C_TXTHLFG);
+
 	}
 
 	r = Rect(0, 0, Scrollwid+ButtonBorder, font->height+1);
@@ -1084,8 +1086,8 @@ iconinit(void)
 	r = button->r;
 	colbutton = allocimage(display, r, screen->chan, 0, DPurpleblue);
 
-	but2col = allocimage(display, r, screen->chan, 1, 0xAA0000FF);
-	but3col = allocimage(display, r, screen->chan, 1, 0x006600FF);
+	but2col = allocimage(display, r, screen->chan, 1, C_BUTTON2HL);
+	but3col = allocimage(display, r, screen->chan, 1, C_BUTTON3HL);
 }
 
 /*
