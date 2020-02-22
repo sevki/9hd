@@ -1,0 +1,12 @@
+<$PLAN9/src/mkhdr
+
+LIB=libtree-sitter-javascript.a
+
+OFILES=\
+	parser.$O\
+	scanner.$O\
+
+HFILES=\
+	$PLAN9/include/tree-sitter/api.h\
+
+<$PLAN9/src/mksyslib

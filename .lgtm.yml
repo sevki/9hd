@@ -1,0 +1,9 @@
+extraction:
+  cpp:
+     prepare:
+        packages: 
+          - bison
+          - clang
+     index:
+        build_command:
+        - ./INSTALL
