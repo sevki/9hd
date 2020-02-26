@@ -37,8 +37,9 @@ for details on using Git.
 Status
 ------
 
-[![Build Status](https://travis-ci.org/9fans/plan9port.svg?branch=master)](https://travis-ci.org/9fans/plan9port)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/plan-9-from-user-space/badge.svg)](https://scan.coverity.com/projects/plan-9-from-user-space)
+![CI](https://github.com/sevki/9hd/workflows/CI/badge.svg)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/sevki/9hd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sevki/9hd/alerts/)
+
 
 
 Contact
@@ -48,4 +49,4 @@ Contact
 * Issue tracker: https://github.com/9fans/plan9port/issues
 * Submitting changes: https://github.com/9fans/plan9port/pulls
 
-* Russ Cox <rsc@swtch.com>
+* Sevki <s@sevki.org>
