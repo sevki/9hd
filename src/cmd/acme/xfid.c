@@ -568,7 +568,8 @@ xfidwrite(Xfid *x)
 		fc.count = x->fcall.count;
 		respond(x, &fc, nil);
 		break;
-
+	case QWcomplete:
+		return;
 	case QWevent:
 		xfideventwrite(x, w);
 		break;

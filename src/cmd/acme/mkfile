@@ -18,6 +18,7 @@ OFILES=\
 	logf.$O\
 	look.$O\
 	regx.$O\
+	riff.$O\
 	rows.$O\
 	scrl.$O\
 	text.$O\
@@ -25,10 +26,14 @@ OFILES=\
 	util.$O\
 	wind.$O\
 	xfid.$O\
+	$PLAN9/lib/libtree-sitter.a\
+	$PLAN9/lib/libtree-sitter-c.a\
 
 HFILES=dat.h\
 	edit.h\
 	fns.h\
+	config.h\
+	riff.h\
 
 <$PLAN9/src/mkone
 <$PLAN9/src/mkdirs

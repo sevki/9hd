@@ -1,0 +1,11 @@
+<$PLAN9/src/mkhdr
+
+LIB=libtree-sitter-go.a
+
+OFILES=\
+	parser.$O\
+
+HFILES=\
+	$PLAN9/include/tree-sitter/api.h\
+
+<$PLAN9/src/mksyslib
